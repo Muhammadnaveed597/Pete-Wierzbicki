@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your LinkedIn, Rebuilt Around Your Proof</title>
+<style>
+:root{
+  --bg:#0b0d16;
+  --bg2:#10131f;
+  --card:#151929;
+  --card2:#1a1f35;
+  --line:#262c47;
+  --text:#eaeaf3;
+  --muted:#9ba3c0;
+  --faint:#697191;
+  --accent:#8b7cf6;
+  --accent2:#5eead4;
+  --bad:#e2705a;
+  --radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:920px;margin:0 auto;padding:0 22px}
+section{padding:72px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.kicker{display:inline-block;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:14px}
+h1{font-size:clamp(30px,5vw,46px);line-height:1.15;font-weight:700;letter-spacing:-0.5px}
+h2{font-size:clamp(24px,3.5vw,32px);line-height:1.2;font-weight:700;letter-spacing:-0.4px;margin-bottom:8px}
+h3{font-size:17px;font-weight:600}
+p.sub{color:var(--muted);font-size:16px;max-width:660px;margin-top:12px}
+.fade{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.fade.in{opacity:1;transform:none}
+.hero{min-height:88vh;display:flex;align-items:center;padding:60px 0;
+  background:radial-gradient(1100px 500px at 15% -10%,rgba(139,124,246,.10),transparent 60%),
+             radial-gradient(900px 450px at 90% 110%,rgba(94,234,212,.07),transparent 60%)}
+.hero .tag{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);background:var(--card);
+  border-radius:999px;padding:7px 16px;font-size:13px;color:var(--muted);margin-bottom:26px}
+.hero .tag b{color:var(--text);font-weight:600}
+.hero-stats{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+.hstat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;font-size:13px;color:var(--muted)}
+.hstat b{display:block;color:var(--text);font-size:16px;font-weight:700}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+@media(max-width:800px){.grid3{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px;
+  transition:transform .25s ease,border-color .25s ease}
+.card:hover{transform:translateY(-3px);border-color:#37406b}
+.card .num{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;background:rgba(139,124,246,.14);color:var(--accent);margin-bottom:16px}
+.card p{font-size:14px;color:var(--muted);margin-top:8px}
+.card .why{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);font-size:13.5px;color:var(--text)}
+.card .why span{color:var(--accent2);font-weight:600}
+.flow{margin-top:40px}
+.flow-row{display:grid;grid-template-columns:1fr 44px 1fr;align-items:stretch}
+@media(max-width:700px){.flow-row{grid-template-columns:1fr}.arrow-cell{display:none}}
+.flow-box{padding:26px 24px;border:1px solid var(--line);background:var(--card)}
+.flow-box.before{border-radius:var(--radius) 0 0 var(--radius);border-right:none}
+.flow-box.after{border-radius:0 var(--radius) var(--radius) 0;background:var(--card2);border-left:none}
+@media(max-width:700px){.flow-box.before,.flow-box.after{border-radius:var(--radius);border:1px solid var(--line)}.flow-box.after{margin-top:10px}}
+.flow-box .label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);margin-bottom:10px;font-weight:600}
+.flow-box.after .label{color:var(--accent2)}
+.flow-box .big{font-size:19px;font-weight:600;line-height:1.4}
+.flow-box p{font-size:14px;color:var(--muted);margin-top:10px}
+.arrow-cell{display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:22px;font-weight:700;
+  background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+@media(max-width:700px){.compare{grid-template-columns:1fr}}
+.cmp{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.cmp .lab{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+.cmp.old .lab{color:var(--bad)}
+.cmp.new .lab{color:var(--accent2)}
+.cmp .txt{font-size:15px;line-height:1.55}
+.cmp.old .txt{color:var(--muted)}
+.cmp.new{background:var(--card2)}
+.asset{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:28px;margin-top:28px;position:relative}
+.asset .inner{white-space:pre-wrap;font-size:15px;line-height:1.7;color:var(--text);font-family:inherit}
+.copy-btn{position:absolute;top:16px;right:16px;background:var(--accent);color:#0b0d16;border:none;font-weight:700;
+  font-size:13px;padding:9px 18px;border-radius:999px;cursor:pointer;transition:background .2s,transform .15s;font-family:inherit;letter-spacing:.3px}
+.copy-btn:hover{transform:scale(1.04)}
+.copy-btn.done{background:var(--accent2)}
+.hl-opt{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin-top:14px;
+  display:flex;gap:18px;align-items:flex-start;transition:border-color .2s}
+.hl-opt:hover{border-color:#37406b}
+.hl-opt .idx{flex:0 0 30px;width:30px;height:30px;border-radius:8px;background:rgba(139,124,246,.14);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;margin-top:2px}
+.hl-opt .body{flex:1}
+.hl-opt .headline-text{font-size:16.5px;font-weight:600;line-height:1.5}
+.hl-opt .idea{font-size:14px;color:var(--muted);margin-top:8px}
+.hl-opt .works{font-size:13.5px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.hl-opt .works span{color:var(--accent2);font-weight:600}
+.hl-opt .copy-mini{flex:0 0 auto;background:transparent;border:1px solid var(--line);color:var(--muted);font-size:12px;
+  padding:7px 14px;border-radius:999px;cursor:pointer;font-family:inherit;transition:all .2s}
+.hl-opt .copy-mini:hover{border-color:var(--accent);color:var(--accent)}
+.hl-opt .copy-mini.done{border-color:var(--accent2);color:var(--accent2)}
+.rec-badge{display:inline-block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:#0b0d16;
+  background:var(--accent2);border-radius:6px;padding:3px 10px;margin-left:10px;vertical-align:middle}
+@media(max-width:600px){.hl-opt{flex-wrap:wrap}}
+.shift{margin-top:36px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.shift .from{font-size:22px;font-weight:700;color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(226,112,90,.6)}
+.shift .to{font-size:26px;font-weight:700;color:var(--accent2)}
+.shift .desc{color:var(--muted);font-size:14px;max-width:560px;margin-top:14px}
+.banner-mock{margin-top:32px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);aspect-ratio:1584/396;
+  background:linear-gradient(120deg,#0d1024 0%,#141a3a 55%,#0d1420 100%);display:flex;flex-direction:column;justify-content:center;
+  padding:0 6%;position:relative}
+.banner-mock .bm-kick{font-size:clamp(9px,1.3vw,13px);letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px}
+.banner-mock .bm-main{font-size:clamp(18px,3.4vw,38px);font-weight:800;line-height:1.15;letter-spacing:-0.5px}
+.banner-mock .bm-main em{font-style:normal;color:var(--accent2)}
+.banner-mock .bm-sub{font-size:clamp(10px,1.4vw,15px);color:#b7bdd6;margin-top:10px;max-width:70%}
+.banner-mock .bm-brand{position:absolute;right:6%;top:50%;transform:translateY(-50%);font-size:clamp(12px,1.8vw,20px);
+  font-weight:800;letter-spacing:1px;color:var(--accent);border:1px solid rgba(139,124,246,.45);padding:6px 14px;border-radius:8px}
+@media(max-width:600px){.banner-mock .bm-brand{display:none}.banner-mock .bm-sub{max-width:100%}}
+.gift-list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:32px}
+@media(max-width:600px){.gift-list{grid-template-columns:1fr}}
+.gift{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;font-size:14.5px;display:flex;gap:12px;align-items:center}
+.gift .tick{color:var(--accent2);font-weight:800;font-size:16px}
+.cta-box{background:linear-gradient(120deg,#131838,#0d1420);border:1px solid rgba(139,124,246,.35);border-radius:20px;
+  padding:44px 36px;text-align:center;margin-top:36px}
+.cta-box h2{margin-bottom:12px}
+.cta-box p{color:var(--muted);max-width:580px;margin:10px auto 0;font-size:15.5px}
+.cta-box .q{color:var(--text);font-weight:600;font-size:18px;margin-top:20px}
+.sources{margin-top:36px;font-size:13.5px;color:var(--muted)}
+.sources a{color:var(--accent);text-decoration:none}
+.sources a:hover{text-decoration:underline}
+.sources li{margin-bottom:10px;list-style:none;padding-left:22px;position:relative}
+.sources li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:2px;background:var(--line)}
+footer{padding:40px 0 60px;color:var(--faint);font-size:13px;text-align:center}
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="tag">Prepared for <b>Pete Wierzbicki</b> · Founder &amp; Architect, U4CE</div>
+    <div class="kicker">A free LinkedIn audit, built for you</div>
+    <h1>Pete, your strongest evidence is buried three sections below your thesis.</h1>
+    <p class="sub">I studied your profile, your Featured media, and your last three months of posts. Your argument about governed cognition is consistent and clearly thought through. What your profile does not show is the thing that makes a one-person architectural lab credible: what you have actually built, and for whom. Here is what I found, and what I would change.</p>
+    <div class="hero-stats">
+      <div class="hstat"><b>3 areas</b>analyzed</div>
+      <div class="hstat"><b>3 gaps</b>worth fixing first</div>
+      <div class="hstat"><b>5 headlines</b>ready to copy</div>
+      <div class="hstat"><b>1 banner</b>concept waiting for your colors</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker fade">What I found</div>
+    <h2 class="fade">The 3 things your profile is making hard to see</h2>
+    <div class="grid3">
+      <div class="card fade">
+        <div class="num">1</div>
+        <h3>Your headline names a thing nobody can decode</h3>
+        <p>"Founder &amp; Architect, U4CE (Universal 4D Cognitive Engine)" tells a visitor what you call it, not what it does, who it is for, or why it matters.</p>
+        <div class="why"><span>Why it matters:</span> Your thesis is upstream governance for AI. The headline gives no reason for a governance leader, architect, or technical investor to stop scrolling and read further.</div>
+      </div>
+      <div class="card fade">
+        <div class="num">2</div>
+        <h3>Your track record lives in the basement</h3>
+        <p>Thirteen years at EA as sole engineering authority on a republishing platform that enabled roughly $60M in annual revenue. Atari. Epyx. A Top Secret data center. Two patents. All of it sits in your Experience section, disconnected from U4CE.</p>
+        <div class="why"><span>Why it matters:</span> In AI governance, everyone has a thesis. Almost nobody has four decades of shipping deterministic systems. That record is your proof, and it never appears in your About.</div>
+      </div>
+      <div class="card fade">
+        <div class="num">3</div>
+        <h3>Everything public is self-published</h3>
+        <p>Your entire public footprint is your own posts and profile. No banner message, and the posts assert the architecture rather than demonstrate the thinking behind it.</p>
+        <div class="why"><span>Why it matters:</span> When one person claims a new layer for AI, the natural question is "why you?" Your profile currently answers with theory. It could answer with reconstruction war stories nobody else in the AI feed can tell.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker fade">The transformation</div>
+    <h2 class="fade">Current state, and where it can go</h2>
+    <div class="flow">
+      <div class="flow-row fade">
+        <div class="flow-box before">
+          <div class="label">Current</div>
+          <div class="big">Founder &amp; Architect, U4CE (Universal 4D Cognitive Engine)</div>
+          <p>A name and a title. The visitor must read your entire About before learning what problem you solve and for whom.</p>
+        </div>
+        <div class="arrow-cell">&#8594;</div>
+        <div class="flow-box after">
+          <div class="label">New</div>
+          <div class="big">4 decades of deterministic systems: Atari, EA, Top Secret data centers. Now building governed cognition before execution. U4CE.</div>
+          <p>Proof first, thesis second. The reader now knows why you, before being asked to evaluate the idea.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker fade">Your profile, repositioned</div>
+    <h2 class="fade">What changes, side by side</h2>
+    <div class="compare">
+      <div class="cmp old fade"><div class="lab">Headline, before</div><div class="txt">Founder &amp; Architect, U4CE (Universal 4D Cognitive Engine)</div></div>
+      <div class="cmp new fade"><div class="lab">Headline, after</div><div class="txt">Proof-led: your record in deterministic systems, then the thesis</div></div>
+      <div class="cmp old fade"><div class="lab">Positioning, before</div><div class="txt">A theory of cognitive infrastructure</div></div>
+      <div class="cmp new fade"><div class="lab">Positioning, after</div><div class="txt">A patent-pending architecture, engineered by someone who spent 40 years making systems behave</div></div>
+      <div class="cmp old fade"><div class="lab">About, before</div><div class="txt">Dense architecture language, assumes the reader already accepts the premise</div></div>
+      <div class="cmp new fade"><div class="lab">About, after</div><div class="txt">Same rigor, opened by the track record, structured around who it is for and what it establishes</div></div>
+      <div class="cmp old fade"><div class="lab">Proof, before</div><div class="txt">Buried in Experience entries about other companies</div></div>
+      <div class="cmp new fade"><div class="lab">Proof, after</div><div class="txt">EA, Atari, patents, and the canonical architecture pulled into the first screen of your story</div></div>
+      <div class="cmp old fade"><div class="lab">Banner, before</div><div class="txt">No message visible</div></div>
+      <div class="cmp new fade"><div class="lab">Banner, after</div><div class="txt">One sentence that carries the thesis: governed cognition before execution</div></div>
+      <div class="cmp old fade"><div class="lab">CTA, before</div><div class="txt">"Shared selectively under NDA," with no path to start that conversation</div></div>
+      <div class="cmp new fade"><div class="lab">CTA, after</div><div class="txt">A clear invitation to request the canonical architecture overview</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="headlines">
+  <div class="wrap">
+    <div class="kicker fade">Your new headline</div>
+    <h2 class="fade">Five options. Each one is copyable.</h2>
+    <p class="sub fade">All five stay inside LinkedIn's character limit. Option 1 is the direction I would lean toward, because in the AI governance conversation, your record is the thing almost nobody else can claim.</p>
+
+    <div class="hl-opt fade">
+      <div class="idx">1</div>
+      <div class="body">
+        <div class="headline-text">4 decades building deterministic systems: Atari, EA, Top Secret data centers. Now architecting governed cognition before execution. U4CE<span class="rec-badge">Recommended</span></div>
+        <div class="idea">Lead with proof, then the thesis.</div>
+        <div class="works"><span>Why it works:</span> It answers "why you" before asking the reader to evaluate the architecture. Nobody else in the AI safety feed opens with this record.</div>
+      </div>
+      <button class="copy-mini" data-copy="4 decades building deterministic systems: Atari, EA, Top Secret data centers. Now architecting governed cognition before execution. U4CE">Copy</button>
+    </div>
+
+    <div class="hl-opt fade">
+      <div class="idx">2</div>
+      <div class="body">
+        <div class="headline-text">Founder &amp; Architect of U4CE | Governed cognition before execution: infrastructure that keeps AI systems predictable, auditable, and durable</div>
+        <div class="idea">Lead with the thesis in plain language.</div>
+        <div class="works"><span>Why it works:</span> It translates your core claim into the three outcomes your audience already cares about.</div>
+      </div>
+      <button class="copy-mini" data-copy="Founder & Architect of U4CE | Governed cognition before execution: infrastructure that keeps AI systems predictable, auditable, and durable">Copy</button>
+    </div>
+
+    <div class="hl-opt fade">
+      <div class="idx">3</div>
+      <div class="body">
+        <div class="headline-text">Architecting the layer beneath AI: identity, lineage, and meaning resolved before execution | U4CE | Patent-pending | 25+ years in systems engineering</div>
+        <div class="idea">Lead with the mechanism and the status.</div>
+        <div class="works"><span>Why it works:</span> It names what the architecture establishes and anchors it with patent-pending status and tenure.</div>
+      </div>
+      <button class="copy-mini" data-copy="Architecting the layer beneath AI: identity, lineage, and meaning resolved before execution | U4CE | Patent-pending | 25+ years in systems engineering">Copy</button>
+    </div>
+
+    <div class="hl-opt fade">
+      <div class="idx">4</div>
+      <div class="body">
+        <div class="headline-text">The issue is not model capability. It is architecture. | Founder &amp; Architect of U4CE, the pre-execution cognitive layer for trustworthy AI</div>
+        <div class="idea">Lead with your strongest contrarian line.</div>
+        <div class="works"><span>Why it works:</span> It opens a loop. Anyone who disagrees has to click, and anyone who agrees remembers you.</div>
+      </div>
+      <button class="copy-mini" data-copy="The issue is not model capability. It is architecture. | Founder & Architect of U4CE, the pre-execution cognitive layer for trustworthy AI">Copy</button>
+    </div>
+
+    <div class="hl-opt fade">
+      <div class="idx">5</div>
+      <div class="body">
+        <div class="headline-text">U4CE: non-executing cognitive infrastructure for AI and regulated domains | Founder &amp; Architect | Canonical architecture, patent-pending</div>
+        <div class="idea">Lead with the category definition.</div>
+        <div class="works"><span>Why it works:</span> It stakes a claim to a category name, which compounds if the term gains traction.</div>
+      </div>
+      <button class="copy-mini" data-copy="U4CE: non-executing cognitive infrastructure for AI and regulated domains | Founder & Architect | Canonical architecture, patent-pending">Copy</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker fade">Your new About section</div>
+    <h2 class="fade">The short version of what changes</h2>
+    <p class="sub fade">Your current About is rigorous, but it opens inside the theory and assumes the reader already accepts the premise. The new version keeps your architectural voice and puts your record in front: four decades of building systems where drift, identity, and reproducibility were not abstract ideas. It also adds what is missing today: who this is for, what the architecture establishes, and a clear path to the deeper material.</p>
+    <div class="asset fade">
+      <button class="copy-btn" data-copy-target="about-text">Copy</button>
+      <div class="inner" id="about-text">I have spent four decades building systems that were not allowed to drift.
+
+At Atari and Epyx, I wrote engine-level code when memory, determinism, and real-time constraints were the architecture. At Electronic Arts, I spent 13 years as the sole engineering authority for a platform that kept an entire back catalog buildable, verifiable, and commercially alive, a republishing system that enabled roughly $60 million in annual revenue. I reconstructed development environments where one missing dependency meant a finished game could never be rebuilt. In a Top Secret data center, I was responsible for the integrity, lineage, and lifecycle of satellite data that scientific research depended on.
+
+That work taught me something the current AI conversation keeps circling without naming: when a system cannot say what it is, where it came from, or what governs it, execution is already unstable.
+
+Most intelligent systems today are built execution-first. They act, then try to govern with filters, patches, and post-hoc controls. That works until systems become autonomous, distributed, and long-lived. Then the ordering itself creates the instability: drift, mutation, and lost authority boundaries.
+
+U4CE is my answer to that. It is a Universal 4D Cognitive Engine: a non-executing cognitive substrate that sits beneath the stack and resolves meaning, identity, and lineage before execution. Not a model. Not a framework. An architectural structure that separates semantic identity, reasoning context, and execution so cognition remains predictable, auditable, and durable as models, domains, and infrastructure evolve.
+
+What it establishes, before anything executes:
+Identity and lineage. Context and evolutional context. Continuity. Governed cognition. Admissibility and eligibility.
+
+Who it is for:
+Organizations building or governing AI in regulated, high-stakes, and long-lived domains, where "we will add guardrails later" is not an acceptable architecture.
+
+The canonical architecture is complete and patent-pending. It is designed to integrate with existing systems and future technologies without rebuild, replacement, or disruption.
+
+Deeper technical material is shared selectively. If you are working on AI governance, cognitive infrastructure, or long-lived autonomous systems and want the canonical overview, message me here.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker fade">Your content opportunity</div>
+    <h2 class="fade">You have been asserting the architecture. Start demonstrating it.</h2>
+    <p class="sub fade">Your last three months of posts all make the same claim from different angles: governance must happen before execution. The thesis is consistent, but consistency without demonstration reads as repetition, and your engagement shows it. You have material almost nobody else in this conversation has: 13 years of rebuilding systems where identity, lineage, and drift were literal, physical problems. Three territories would separate you immediately: reconstruction war stories from EA and Atari, the pre-execution conditions translated into concrete failure cases, and honest notes on what a patent-pending architecture can and cannot claim yet.</p>
+    <h3 class="fade" style="margin-top:40px">A complete first post, written in your voice</h3>
+    <div class="asset fade">
+      <button class="copy-btn" data-copy-target="post-text">Copy Post</button>
+      <div class="inner" id="post-text">I spent part of 13 years at Electronic Arts reconstructing build environments from archival media.
+
+A finished game, delivered years earlier, had to be rebuilt from source. Toolchains, libraries, licensing systems, environment variables, hundreds of dependencies. If one was missing or wrong, the executable would not build, and a title that generated real revenue was unrecoverable.
+
+That work changes how you see the current AI conversation.
+
+Every week I read that some system "drifted," lost track of context, confused authority, or could not explain why it produced an output. The industry responds with more guardrails, more filters, more monitoring.
+
+Those are downstream responses. In my reconstruction work, downstream was too late. If the environment that produced the artifact was not preserved and governed, the artifact was gone. The only durable solution was upstream: identity and lineage, established before execution, preserved across change.
+
+AI is now producing artifacts and actions at a scale no archive was designed for, with far less control over the environments that produce them.
+
+That is not a capability problem. It is the same problem I spent a career solving, at a new layer.
+
+This is why I am building U4CE: a non-executing cognitive substrate that establishes identity, lineage, and governed context before execution, so intelligence remains predictable, auditable, and durable as it scales.
+
+The question is not whether AI needs more capability.
+
+It is whether we preserve the conditions that make capability trustworthy.
+
+What is the earliest point in a system's life where you think governance should begin?</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker fade">Your profile message</div>
+    <h2 class="fade">The core shift in one line</h2>
+    <div class="shift fade">
+      <div class="from">A man with a theory about AI</div>
+      <div style="font-size:22px;color:var(--accent);font-weight:700">&#8595;</div>
+      <div class="to">An engineer with 40 years of proof, now extending it to cognition</div>
+      <p class="desc">Your theory does not change. What changes is which part of you walks into the room first.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker fade">Your banner</div>
+    <h2 class="fade">From an empty strip to your thesis in one line</h2>
+    <p class="sub fade">Your profile's top visual space currently carries no message. That strip can do the one job your headline cannot: state the thesis in full, before a single click.</p>
+    <div class="banner-mock fade">
+      <div class="bm-kick">U4CE | Wierzbicki Cognitive Systems Lab</div>
+      <div class="bm-main">Governed cognition, <em>before execution.</em></div>
+      <div class="bm-sub">The non-executing infrastructure that keeps AI systems predictable, auditable, and durable.</div>
+      <div class="bm-brand">U4CE</div>
+    </div>
+    <div class="asset fade">
+      <button class="copy-btn" data-copy-target="banner-text">Copy</button>
+      <div class="inner" id="banner-text">Governed cognition, before execution.
+
+The non-executing infrastructure that keeps AI systems predictable, auditable, and durable.
+
+U4CE | Wierzbicki Cognitive Systems Lab</div>
+    </div>
+    <p class="sub fade">This is a direction, not a final design. I was already working on the real banner for you, and there is one thing I do not want to guess.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker fade">Your free gift</div>
+    <h2 class="fade">Everything on this page is yours to use</h2>
+    <div class="gift-list">
+      <div class="gift fade"><span class="tick">&#10003;</span>Five new headline options, ready to paste</div>
+      <div class="gift fade"><span class="tick">&#10003;</span>A complete replacement About section</div>
+      <div class="gift fade"><span class="tick">&#10003;</span>A full LinkedIn post written in your voice</div>
+      <div class="gift fade"><span class="tick">&#10003;</span>Your profile repositioned around your actual proof</div>
+      <div class="gift fade"><span class="tick">&#10003;</span>Banner messaging with a clear concept</div>
+      <div class="gift fade"><span class="tick">&#10003;</span>A concrete map of what to fix first, and why</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta-box fade">
+      <div class="kicker" style="margin-bottom:8px">One last thing</div>
+      <h2>Let me finish the banner for you</h2>
+      <p>I was already working on it while building this. The only thing I do not want to guess is your visual preference.</p>
+      <p class="q">Do you already have brand colors you want me to use?</p>
+      <p>If yes, send them over. If not, just tell me whether you prefer light or dark, or any colors you personally like, and I will take it from there.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker fade">Sources</div>
+    <h2 class="fade" style="font-size:22px">What this audit was built on</h2>
+    <ul class="sources fade">
+      <li>Your LinkedIn profile and recent activity (supplied), including your headline, About, Featured media, experience, and posts.</li>
+      <li><a href="https://www.linkedin.com/in/petewierzbicki" target="_blank" rel="noopener">linkedin.com/in/petewierzbicki</a>, public posts and profile details.</li>
+      <li><a href="https://petewierzbicki.com" target="_blank" rel="noopener">petewierzbicki.com</a>, referenced from your profile.</li>
+      <li>Public footprint check: as of this review, independent coverage of U4CE consists of your own published posts. That makes this profile the entire front door, which is why the gaps above matter more than they would for anyone else.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>Built specifically for Pete Wierzbicki. No templates, no recycled copy.</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+  });
+},{threshold:.12});
+document.querySelectorAll('.fade').forEach(el=>io.observe(el));
+
+function flash(btn,label){
+  const orig=btn.textContent;
+  btn.textContent=label;
+  btn.classList.add('done');
+  setTimeout(()=>{btn.textContent=orig;btn.classList.remove('done');},1600);
+}
+document.querySelectorAll('[data-copy-target]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const el=document.getElementById(btn.getAttribute('data-copy-target'));
+    navigator.clipboard.writeText(el.textContent).then(()=>flash(btn,'Copied \u2713'));
+  });
+});
+document.querySelectorAll('.copy-mini[data-copy]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    navigator.clipboard.writeText(btn.getAttribute('data-copy')).then(()=>flash(btn,'Copied \u2713'));
+  });
+});
+</script>
+</body>
+</html>
